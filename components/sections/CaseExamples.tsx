@@ -6,10 +6,10 @@ import { motion } from 'framer-motion'
 
 const metrics = [
   {
-    value: 30,
-    suffix: '%+',
-    label: 'Average Cloud Savings',
-    sub: 'Across all client engagements',
+    value: 200,
+    suffix: '+',
+    label: 'Companies Helped',
+    sub: 'Across AI startups, SaaS & enterprise',
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
         <path d="M3 17l5-5 4 4 7-9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -20,10 +20,10 @@ const metrics = [
     border: 'rgba(34,197,94,0.18)',
   },
   {
-    value: 48,
-    suffix: 'h',
-    label: 'Audit Turnaround',
-    sub: 'From request to full report',
+    value: 500,
+    suffix: '+',
+    label: 'Cloud Environments Optimized',
+    sub: 'AWS, GCP, and Azure combined',
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
         <circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.8" />
@@ -35,10 +35,10 @@ const metrics = [
     border: 'rgba(77,163,255,0.18)',
   },
   {
-    value: 500,
-    suffix: '+',
-    label: 'Environments Optimized',
-    sub: 'AWS, GCP, and Azure combined',
+    value: 3,
+    suffix: '',
+    label: 'Cloud Platforms',
+    sub: 'AWS · GCP · Azure — full coverage',
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
         <path d="M11 2C6.03 2 2 6.03 2 11s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9z" stroke="currentColor" strokeWidth="1.8" />

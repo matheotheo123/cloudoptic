@@ -16,7 +16,12 @@ const solutions = [
     featured: true,
     title: 'AI Infrastructure Optimization',
     description: 'We right-size your AI workloads so you only pay for compute you actually use.',
-    bullets: ['GPU utilization audits', 'Inference cost optimization', 'Spot instance migration', 'Auto-scaling policies'],
+    bullets: [
+      'GPU utilization audits',
+      'Inference cost optimization',
+      'Agentic AI pipeline design',
+      'AI ops team augmentation',
+    ],
   },
   {
     problem: 'Cloud bills spike with no visibility into why',
@@ -29,20 +34,31 @@ const solutions = [
     featured: false,
     title: 'Cloud Cost Reduction',
     description: 'We audit and fix AWS, GCP, and Azure spending end-to-end.',
-    bullets: ['Multi-cloud billing audit', 'Reserved instance planning', 'Idle resource cleanup', 'Cost tagging & governance'],
+    bullets: [
+      'Multi-cloud billing audit',
+      'Reserved instance planning',
+      'Idle resource cleanup',
+      'Cost tagging & governance',
+    ],
   },
   {
-    problem: 'Oversized Kubernetes clusters drain runway silently',
+    problem: 'No in-house AI expertise to move fast',
     icon: (
       <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-        <path d="M13 3L3 8v10l10 5 10-5V8L13 3z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M3 8l10 5 10-5M13 13v9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="13" cy="9" r="4" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M5 22c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M19 7l1.5 1.5L23 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
     featured: false,
-    title: 'Kubernetes Optimization',
-    description: 'We tune your cluster resources to eliminate wasted compute immediately.',
-    bullets: ['Resource request tuning', 'Node pool right-sizing', 'HPA & VPA policies', 'Spot node migration'],
+    title: 'Hire an AI Expert',
+    description: 'We connect you with vetted AI engineers and FinOps experts ready to join your team.',
+    bullets: [
+      'Vetted AI engineers on-demand',
+      'FinOps-certified talent',
+      'Fractional & full-time options',
+      'Fast placement support',
+    ],
   },
 ]
 
@@ -61,7 +77,7 @@ export default function Solutions() {
             For Companies
           </span>
           <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold text-gray-900 leading-tight mb-4">
-            Every dollar of cloud waste
+            Every AI and cloud challenge
             <br className="hidden sm:block" />
             <span className="text-gray-400"> has a fix.</span>
           </h2>
@@ -105,7 +121,6 @@ export default function Solutions() {
                   {s.description}
                 </p>
 
-                {/* Bullets */}
                 <ul className="space-y-2 mb-7">
                   {s.bullets.map((b) => (
                     <li key={b} className="flex items-center gap-2.5 text-sm">
@@ -124,7 +139,7 @@ export default function Solutions() {
                   className={s.featured ? 'bg-white text-primary hover:bg-blue-50 w-full' : 'bg-primary-light text-primary hover:bg-primary/10 border border-primary/20 w-full'}
                   onClick={handleCTA}
                 >
-                  Get Free Audit
+                  Get Started
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>

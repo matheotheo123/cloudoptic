@@ -47,12 +47,12 @@ export default function CTASection() {
                 <h2 className="text-[clamp(26px,4.5vw,48px)] font-extrabold text-gray-900 leading-tight mb-5">
                   Start Your Free
                   <br />
-                  <span className="gradient-text">FinOps Audit</span>
+                  <span className="gradient-text">AI / FinOps Audit</span>
                 </h2>
 
                 <p className="text-gray-500 text-lg mb-10 max-w-lg mx-auto">
-                  Get a detailed infrastructure review from a certified FinOps engineer.
-                  No commitment. Results in 48 hours.
+                  Get a detailed AI and infrastructure review from a certified expert.
+                  No commitment required.
                 </p>
 
                 {/* Primary CTA */}
@@ -60,7 +60,7 @@ export default function CTASection() {
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M9 1l2 6h6l-5 3.5 2 6L9 13l-5 3.5 2-6L1 7h6L9 1z" fill="currentColor" />
                   </svg>
-                  Get Free Audit
+                  Book a Strategy Call
                 </Button>
 
                 {/* Expert link → new page */}
@@ -75,7 +75,7 @@ export default function CTASection() {
 
                 {/* Trust signals */}
                 <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
-                  {['✓ No credit card', '✓ 48-hour turnaround', '✓ Zero commitment'].map((item) => (
+                  {['✓ No credit card', '✓ AI & FinOps experts', '✓ Zero commitment'].map((item) => (
                     <span key={item} className="text-sm font-medium text-gray-400">{item}</span>
                   ))}
                 </div>

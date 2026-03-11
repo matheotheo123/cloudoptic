@@ -28,9 +28,9 @@ export default function Footer() {
               <a href="#" className="flex items-center gap-2 mb-4" aria-label="Anthropi home">
                 <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                    <path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" fill="white" fillOpacity="0.3" />
-                    <circle cx="9" cy="9" r="3" fill="white" />
-                    <path d="M9 4v2M9 12v2M4 9h2M12 9h2" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M14.5 9.8a2 2 0 00-1.3-1.8l-.1-.1A3.2 3.2 0 005.3 8a2 2 0 00-1.8 2 2 2 0 002 2h7a2 2 0 002-2.2z" fill="white" fillOpacity="0.25" stroke="white" strokeWidth="0.9" strokeLinejoin="round" />
+                    <circle cx="9" cy="6.8" r="1.5" fill="white" />
+                    <path d="M6.4 11.6c0-1.4 1.2-2.6 2.6-2.6s2.6 1.2 2.6 2.6" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
                   </svg>
                 </div>
                 <span className="font-bold text-[17px] text-gray-900 tracking-tight">

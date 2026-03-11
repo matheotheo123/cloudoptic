@@ -117,10 +117,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       id="modal-title"
                       className="text-xl font-bold text-gray-900 mb-1"
                     >
-                      Book Your Free Audit
+                      Book a Strategy Call
                     </h2>
                     <p className="text-sm text-gray-400">
-                      We&apos;ll respond within 24 hours.
+                      We&apos;ll be in touch shortly.
                     </p>
                   </div>
                   <button
@@ -149,9 +149,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       We&apos;ve received your request and will be in touch within 24
                       hours with your audit details.
                     </p>
-                    <Button onClick={handleClose} variant="secondary">
-                      Close
-                    </Button>
+                    <Button onClick={handleClose} variant="secondary">Close</Button>
                   </div>
                 ) : (
                   <form ref={formRef} onSubmit={handleSubmit} noValidate>
