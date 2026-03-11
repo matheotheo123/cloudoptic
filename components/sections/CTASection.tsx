@@ -1,14 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import FadeUp from '@/components/ui/FadeUp'
 import Button from '@/components/ui/Button'
 import ContactModal from '@/components/ui/ContactModal'
-import ExpertModal from '@/components/ui/ExpertModal'
 
 export default function CTASection() {
   const [auditOpen, setAuditOpen] = useState(false)
-  const [expertOpen, setExpertOpen] = useState(false)
 
   return (
     <>
@@ -64,14 +63,14 @@ export default function CTASection() {
                   Get Free Audit
                 </Button>
 
-                {/* Expert secondary link */}
+                {/* Expert link → new page */}
                 <div>
-                  <button
-                    onClick={() => setExpertOpen(true)}
+                  <Link
+                    href="/for-experts"
                     className="text-sm text-gray-400 hover:text-primary transition-colors underline underline-offset-4"
                   >
                     I&apos;m a FinOps Expert
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Trust signals */}
@@ -87,7 +86,6 @@ export default function CTASection() {
       </section>
 
       <ContactModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
-      <ExpertModal isOpen={expertOpen} onClose={() => setExpertOpen(false)} />
     </>
   )
 }

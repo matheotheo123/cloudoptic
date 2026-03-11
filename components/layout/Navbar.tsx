@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button'
 
 const navLinks = [
   { label: 'For Companies', href: '#solutions' },
-  { label: 'For FinOps Experts', href: '#for-experts' },
+  { label: 'For FinOps Experts', href: '/for-experts' },
 ]
 
 export default function Navbar() {

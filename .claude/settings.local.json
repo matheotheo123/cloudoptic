@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(claude mcp:*)",
+      "Bash(gh auth:*)",
+      "Bash(cd \"C:\\\\Users\\\\8bitm\\\\OneDrive\\\\Desktop\\\\Cloudoptic\" && gh repo create cloudoptic --public --source=. --remote=origin --push 2>&1)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
