@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import Button from '@/components/ui/Button'
 
 const navLinks = [
-  { label: 'For Companies', href: '#solutions' },
+  { label: 'For Companies', href: '/#solutions' },
   { label: 'For FinOps Experts', href: '/for-experts' },
 ]
 
@@ -41,8 +42,8 @@ export default function Navbar() {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <a
-            href="#"
+          <Link
+            href="/"
             className="flex items-center gap-2 focus-visible:outline-none"
             aria-label="CloudOptic home"
           >
@@ -56,18 +57,18 @@ export default function Navbar() {
             <span className="font-bold text-[17px] text-gray-900 tracking-tight">
               Cloud<span className="text-primary">Optic</span>
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <ul className="hidden md:flex items-center gap-1" role="list">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
                   className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100/80 transition-colors duration-150"
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -120,13 +121,13 @@ export default function Navbar() {
             <ul className="flex flex-col gap-1" role="list">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     className="block px-4 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
                     onClick={() => setMobileOpen(false)}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
               <li className="pt-2 mt-1 border-t border-gray-100">
