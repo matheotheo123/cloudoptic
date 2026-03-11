@@ -113,7 +113,7 @@ export default function CaseExamples() {
               <path d="M6 20c0-6 4-10 8-12l2 3c-2.5 1.5-4 3.5-4 5h4v8H6v-4zm14 0c0-6 4-10 8-12l2 3c-2.5 1.5-4 3.5-4 5h4v8H20v-4z" fill="currentColor" />
             </svg>
             <p className="text-lg text-gray-600 italic max-w-2xl mx-auto mb-5 leading-relaxed">
-              &ldquo;CloudOptic cut our monthly AI infrastructure bill from $120k to $68k in three weeks.
+              &ldquo;Anthropi cut our monthly AI infrastructure bill from $120k to $68k in three weeks.
               The ROI was immediate and the process was completely hands-off for our engineering team.&rdquo;
             </p>
             <div className="flex items-center justify-center gap-3">

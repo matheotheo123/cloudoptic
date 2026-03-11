@@ -25,7 +25,7 @@ export async function sendLeadNotification(lead: {
 
   try {
     await resend.emails.send({
-      from: 'CloudOptic <notifications@cloudoptic.com>',
+      from: 'Anthropi <notifications@anthropi.com>',
       to: adminEmail,
       subject: `New Audit Request — ${lead.company}`,
       html: `
@@ -57,7 +57,7 @@ export async function sendExpertNotification(expert: {
 
   try {
     await resend.emails.send({
-      from: 'CloudOptic <notifications@cloudoptic.com>',
+      from: 'Anthropi <notifications@anthropi.com>',
       to: adminEmail,
       subject: `New Expert Application — ${expert.name}`,
       html: `

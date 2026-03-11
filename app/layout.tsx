@@ -10,9 +10,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'CloudOptic — Cut Your AI & Cloud Costs by 30%',
+  title: 'Anthropi — Cut Your AI & Cloud Costs by 30%',
   description:
-    'CloudOptic connects companies with elite FinOps engineers who reduce infrastructure spend without sacrificing performance. Get your free cloud cost audit today.',
+    'Anthropi connects companies with elite FinOps engineers who reduce infrastructure spend without sacrificing performance. Get your free cloud cost audit today.',
   keywords: [
     'FinOps consulting',
     'cloud cost optimization',
@@ -23,19 +23,19 @@ export const metadata: Metadata = {
     'Azure cost optimization',
     'cloud spend',
   ],
-  metadataBase: new URL('https://cloudoptic.com'),
-  authors: [{ name: 'CloudOptic' }],
+  metadataBase: new URL('https://anthropi.com'),
+  authors: [{ name: 'Anthropi' }],
   openGraph: {
-    title: 'CloudOptic — Cut Your AI & Cloud Costs by 30%',
+    title: 'Anthropi — Cut Your AI & Cloud Costs by 30%',
     description:
       'Elite FinOps engineers who reduce your cloud infrastructure spend without sacrificing performance.',
     type: 'website',
     locale: 'en_US',
-    siteName: 'CloudOptic',
+    siteName: 'Anthropi',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CloudOptic — Cut Your AI & Cloud Costs by 30%',
+    title: 'Anthropi — Cut Your AI & Cloud Costs by 30%',
     description:
       'Elite FinOps engineers who reduce your cloud infrastructure spend without sacrificing performance.',
   },

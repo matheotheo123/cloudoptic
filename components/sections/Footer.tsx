@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
-              <a href="#" className="flex items-center gap-2 mb-4" aria-label="CloudOptic home">
+              <a href="#" className="flex items-center gap-2 mb-4" aria-label="Anthropi home">
                 <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" fill="white" fillOpacity="0.3" />
@@ -34,7 +34,7 @@ export default function Footer() {
                   </svg>
                 </div>
                 <span className="font-bold text-[17px] text-gray-900 tracking-tight">
-                  Cloud<span className="text-primary">Optic</span>
+                  Anthro<span className="text-primary">pi</span>
                 </span>
               </a>
               <p className="text-sm text-gray-400 leading-relaxed max-w-[200px]">
@@ -66,7 +66,7 @@ export default function Footer() {
 
           <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-400">
-              &copy; {new Date().getFullYear()} CloudOptic. All rights reserved.
+              &copy; {new Date().getFullYear()} Anthropi. All rights reserved.
             </p>
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500" aria-hidden="true" />

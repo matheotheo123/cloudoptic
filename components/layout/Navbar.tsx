@@ -45,7 +45,7 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-2 focus-visible:outline-none"
-            aria-label="CloudOptic home"
+            aria-label="Anthropi home"
           >
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -55,7 +55,7 @@ export default function Navbar() {
               </svg>
             </div>
             <span className="font-bold text-[17px] text-gray-900 tracking-tight">
-              Cloud<span className="text-primary">Optic</span>
+              Anthro<span className="text-primary">pi</span>
             </span>
           </Link>
 

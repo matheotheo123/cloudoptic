@@ -9,7 +9,7 @@ export const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(10, '60 s'),
   analytics: false,
-  prefix: 'cloudoptic:contact',
+  prefix: 'anthropi:contact',
 })
 
 /**
