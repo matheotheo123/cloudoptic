@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ratelimit, getIp } from '@/lib/ratelimit'
 import { verifyTurnstile } from '@/lib/turnstile'
 import { supabaseAdmin } from '@/lib/supabase'
-
-// Allow only POST
-export const runtime = 'edge'
+import { sendLeadNotification } from '@/lib/email'
 
 function sanitize(value: unknown): string {
   if (typeof value !== 'string') return ''
@@ -85,6 +83,9 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     )
   }
+
+  // ── 6. Email notification ───────────────────────────────────────────────────
+  await sendLeadNotification({ name, email, company, cloud_spend, message: message || undefined })
 
   return NextResponse.json({ success: true }, { status: 201 })
 }

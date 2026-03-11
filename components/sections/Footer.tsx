@@ -1,15 +1,15 @@
 import FadeUp from '@/components/ui/FadeUp'
 
 const links = {
-  Services: [
+  'For Companies': [
     { label: 'AI Infrastructure', href: '#solutions' },
     { label: 'Cloud Cost Reduction', href: '#solutions' },
     { label: 'Kubernetes Optimization', href: '#solutions' },
+    { label: 'Book Free Audit', href: '#cta' },
   ],
-  Company: [
+  'For Experts': [
+    { label: 'Join Our Network', href: '#for-experts' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Case Studies', href: '#case-examples' },
-    { label: 'Book Audit', href: '#cta' },
   ],
   Legal: [
     { label: 'Privacy Policy', href: '#' },
@@ -25,31 +25,12 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
-              <a
-                href="#"
-                className="flex items-center gap-2 mb-4"
-                aria-label="CloudOptic home"
-              >
+              <a href="#" className="flex items-center gap-2 mb-4" aria-label="CloudOptic home">
                 <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
-                      fill="white"
-                      fillOpacity="0.3"
-                    />
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" fill="white" fillOpacity="0.3" />
                     <circle cx="9" cy="9" r="3" fill="white" />
-                    <path
-                      d="M9 4v2M9 12v2M4 9h2M12 9h2"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
+                    <path d="M9 4v2M9 12v2M4 9h2M12 9h2" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </div>
                 <span className="font-bold text-[17px] text-gray-900 tracking-tight">
@@ -57,8 +38,7 @@ export default function Footer() {
                 </span>
               </a>
               <p className="text-sm text-gray-400 leading-relaxed max-w-[200px]">
-                Elite FinOps engineers who cut cloud costs without cutting
-                performance.
+                Elite FinOps engineers who cut cloud costs without cutting performance.
               </p>
             </div>
 
@@ -84,7 +64,6 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Bottom bar */}
           <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-400">
               &copy; {new Date().getFullYear()} CloudOptic. All rights reserved.

@@ -2,56 +2,58 @@
 
 import FadeUp from '@/components/ui/FadeUp'
 import AnimatedCounter from '@/components/ui/AnimatedCounter'
-import GlassCard from '@/components/ui/GlassCard'
+import { motion } from 'framer-motion'
 
-const cases = [
+const metrics = [
   {
-    tag: 'AI Startup',
-    description:
-      'A Series B AI startup was running LLM inference on over-provisioned GPU clusters with no auto-scaling.',
-    before: 120000,
-    after: 68000,
-    savingsPct: 43,
-    timeframe: '3 weeks',
-    items: [
-      'Spot instance migration for non-critical workloads',
-      'Inference batching & model quantization',
-      'Auto-scaling based on request queue depth',
-    ],
+    value: 30,
+    suffix: '%+',
+    label: 'Average Cloud Savings',
+    sub: 'Across all client engagements',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <path d="M3 17l5-5 4 4 7-9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    color: 'text-green-600',
+    bg: 'rgba(34,197,94,0.08)',
+    border: 'rgba(34,197,94,0.18)',
   },
   {
-    tag: 'SaaS Platform',
-    description:
-      'A mid-market SaaS company had orphaned reserved instances and no resource tagging across 3 AWS accounts.',
-    before: 85000,
-    after: 54000,
-    savingsPct: 36,
-    timeframe: '2 weeks',
-    items: [
-      'Reserved instance portfolio rebalancing',
-      'Resource tagging & cost allocation',
-      'Idle EC2 and RDS cleanup',
-    ],
+    value: 48,
+    suffix: 'h',
+    label: 'Audit Turnaround',
+    sub: 'From request to full report',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M11 6v5l3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    color: 'text-primary',
+    bg: 'rgba(77,163,255,0.08)',
+    border: 'rgba(77,163,255,0.18)',
   },
   {
-    tag: 'FinTech Scale-up',
-    description:
-      'A FinTech company was over-provisioning Kubernetes nodes with no VPA/HPA policies in place.',
-    before: 210000,
-    after: 127000,
-    savingsPct: 40,
-    timeframe: '4 weeks',
-    items: [
-      'VPA & HPA policy implementation',
-      'Spot node pool migration',
-      'Namespace-level resource quotas',
-    ],
+    value: 500,
+    suffix: '+',
+    label: 'Environments Optimized',
+    sub: 'AWS, GCP, and Azure combined',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <path d="M11 2C6.03 2 2 6.03 2 11s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9z" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M7 11l3 3 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    color: 'text-violet-600',
+    bg: 'rgba(124,58,237,0.07)',
+    border: 'rgba(124,58,237,0.15)',
   },
 ]
 
 export default function CaseExamples() {
   return (
-    <section id="case-examples" aria-label="Case studies" className="section">
+    <section id="case-examples" aria-label="Results" className="section">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <FadeUp className="text-center mb-14">
@@ -59,132 +61,70 @@ export default function CaseExamples() {
             Results
           </span>
           <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold text-gray-900 leading-tight mb-4">
-            Real savings, real companies
+            Numbers that speak for themselves
           </h2>
-          <p className="text-gray-500 text-lg max-w-lg mx-auto">
-            From AI startups to enterprise SaaS — our FinOps engineers deliver
-            measurable results fast.
+          <p className="text-gray-500 text-lg max-w-md mx-auto">
+            Real outcomes from real engagements across AI startups, SaaS platforms, and enterprise teams.
           </p>
         </FadeUp>
 
-        {/* Case cards */}
+        {/* Metrics */}
         <div className="grid md:grid-cols-3 gap-6 mb-14">
-          {cases.map((c, i) => (
-            <FadeUp key={c.tag} delay={i * 0.1}>
-              <GlassCard hover padding="lg" className="h-full flex flex-col">
-                {/* Tag */}
-                <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-primary bg-primary-light px-3 py-1 rounded-full mb-5 self-start">
-                  {c.tag}
-                </span>
-
-                <p className="text-gray-500 text-sm leading-relaxed mb-6">
-                  {c.description}
-                </p>
-
-                {/* Numbers */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="rounded-xl p-4 bg-gray-50 border border-gray-100">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-1">
-                      Before
-                    </p>
-                    <AnimatedCounter
-                      from={c.before}
-                      to={c.before}
-                      prefix="$"
-                      suffix="/mo"
-                      className="text-lg font-bold text-gray-400 tabular-nums"
-                    />
-                  </div>
-                  <div
-                    className="rounded-xl p-4"
-                    style={{ background: 'rgba(77,163,255,0.06)', border: '1px solid rgba(77,163,255,0.15)' }}
-                  >
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1">
-                      After
-                    </p>
-                    <AnimatedCounter
-                      from={c.before}
-                      to={c.after}
-                      prefix="$"
-                      suffix="/mo"
-                      duration={1800}
-                      className="text-lg font-bold text-primary tabular-nums"
-                    />
-                  </div>
-                </div>
-
-                {/* Savings highlight */}
+          {metrics.map((m, i) => (
+            <FadeUp key={m.label} delay={i * 0.12}>
+              <motion.div
+                whileHover={{ scale: 1.02, boxShadow: '0 8px 40px rgba(77,163,255,0.12)' }}
+                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                className="glass rounded-2xl p-8 text-center shadow-glass flex flex-col items-center"
+              >
+                {/* Icon */}
                 <div
-                  className="rounded-xl px-5 py-4 flex items-center justify-between mb-6"
-                  style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)' }}
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 ${m.color}`}
+                  style={{ background: m.bg, border: `1px solid ${m.border}` }}
                 >
-                  <span className="text-sm text-gray-500 font-medium">Savings</span>
-                  <div className="flex items-center gap-2">
-                    <AnimatedCounter
-                      from={0}
-                      to={c.savingsPct}
-                      suffix="%"
-                      duration={1600}
-                      className="text-2xl font-extrabold text-green-600 tabular-nums"
-                    />
-                    <span className="text-xs text-gray-400">in {c.timeframe}</span>
-                  </div>
+                  {m.icon}
                 </div>
 
-                {/* Action items */}
-                <ul className="space-y-2 flex-1">
-                  {c.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2 text-xs text-gray-500"
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        className="mt-0.5 flex-shrink-0 text-primary"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M2 6l2.5 2.5L10 3"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </GlassCard>
+                {/* Counter */}
+                <AnimatedCounter
+                  from={0}
+                  to={m.value}
+                  suffix={m.suffix}
+                  duration={1800}
+                  className={`text-5xl font-extrabold tabular-nums ${m.color}`}
+                />
+
+                <p className="text-[17px] font-semibold text-gray-800 mt-3 mb-1">
+                  {m.label}
+                </p>
+                <p className="text-sm text-gray-400">{m.sub}</p>
+              </motion.div>
             </FadeUp>
           ))}
         </div>
 
-        {/* Aggregate stats bar */}
+        {/* Social proof quote */}
         <FadeUp>
-          <div className="glass rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center shadow-glass">
-            {[
-              { value: 30, suffix: '%+', label: 'Average savings' },
-              { value: 48, suffix: 'h', label: 'Audit turnaround' },
-              { value: 2, suffix: 'wks', label: 'Time to results' },
-              { value: 100, suffix: '%', label: 'Risk-free engagement' },
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center">
-                <AnimatedCounter
-                  from={0}
-                  to={stat.value}
-                  suffix={stat.suffix}
-                  duration={1600}
-                  className="text-3xl font-extrabold text-gray-900 tabular-nums"
-                />
-                <span className="text-xs text-gray-400 mt-1.5 font-medium">
-                  {stat.label}
-                </span>
+          <div
+            className="glass rounded-2xl p-8 md:p-10 text-center shadow-glass"
+            style={{ background: 'rgba(77,163,255,0.04)', borderColor: 'rgba(77,163,255,0.15)' }}
+          >
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="mx-auto mb-4 text-primary/30" aria-hidden="true">
+              <path d="M6 20c0-6 4-10 8-12l2 3c-2.5 1.5-4 3.5-4 5h4v8H6v-4zm14 0c0-6 4-10 8-12l2 3c-2.5 1.5-4 3.5-4 5h4v8H20v-4z" fill="currentColor" />
+            </svg>
+            <p className="text-lg text-gray-600 italic max-w-2xl mx-auto mb-5 leading-relaxed">
+              &ldquo;CloudOptic cut our monthly AI infrastructure bill from $120k to $68k in three weeks.
+              The ROI was immediate and the process was completely hands-off for our engineering team.&rdquo;
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-sm">
+                JK
               </div>
-            ))}
+              <div className="text-left">
+                <p className="text-sm font-semibold text-gray-800">Jordan K.</p>
+                <p className="text-xs text-gray-400">CTO, Series B AI Startup</p>
+              </div>
+            </div>
           </div>
         </FadeUp>
       </div>

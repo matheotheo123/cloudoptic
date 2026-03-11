@@ -1,77 +1,55 @@
 'use client'
 
 import FadeUp from '@/components/ui/FadeUp'
-import GlassCard from '@/components/ui/GlassCard'
 import Button from '@/components/ui/Button'
 
 const solutions = [
   {
+    problem: 'GPU clusters idle up to 70% of the time',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="3" y="8" width="22" height="15" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M8 8V6a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        <path d="M14 13v4M12 15h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        <circle cx="21" cy="8" r="3.5" fill="currentColor" fillOpacity="0.15" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M21 6.5v1.5l1 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <rect x="2" y="7" width="22" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M8 7V5a2 2 0 012-2h6a2 2 0 012 2v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M13 12v4M11 14h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
-    label: 'Most Popular',
+    featured: true,
     title: 'AI Infrastructure Optimization',
-    description:
-      'Slash GPU costs and model serving expenses with right-sizing, spot instances, and intelligent auto-scaling strategies tailored to your AI workloads.',
-    bullets: [
-      'GPU utilization audits',
-      'Inference cost optimization',
-      'Training pipeline efficiency',
-      'Model serving right-sizing',
-    ],
-    href: '#cta',
+    description: 'We right-size your AI workloads so you only pay for compute you actually use.',
+    bullets: ['GPU utilization audits', 'Inference cost optimization', 'Spot instance migration', 'Auto-scaling policies'],
   },
   {
+    problem: 'Cloud bills spike with no visibility into why',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M14 3C8.48 3 4 7.48 4 13s4.48 10 10 10 10-4.48 10-10S19.52 3 14 3z" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M4 13h20M14 3c-2.76 3.33-4 6.55-4 10s1.24 6.67 4 10M14 3c2.76 3.33 4 6.55 4 10s-1.24 6.67-4 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M13 2C7.48 2 3 6.48 3 12s4.48 10 10 10 10-4.48 10-10S18.52 2 13 2z" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M3 12h20M13 2c-2.76 3.33-4 6.55-4 10s1.24 6.67 4 10M13 2c2.76 3.33 4 6.55 4 10s-1.24 6.67-4 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
-    label: null,
+    featured: false,
     title: 'Cloud Cost Reduction',
-    description:
-      'Comprehensive audit and optimization of AWS, GCP, and Azure spending. From reserved instance strategy to idle resource cleanup.',
-    bullets: [
-      'Multi-cloud billing audit',
-      'Reserved instance planning',
-      'Idle resource elimination',
-      'Cost allocation & tagging',
-    ],
-    href: '#cta',
+    description: 'We audit and fix AWS, GCP, and Azure spending end-to-end.',
+    bullets: ['Multi-cloud billing audit', 'Reserved instance planning', 'Idle resource cleanup', 'Cost tagging & governance'],
   },
   {
+    problem: 'Oversized Kubernetes clusters drain runway silently',
     icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M14 4L4 9v10l10 5 10-5V9L14 4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M4 9l10 5 10-5M14 14v9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="14" cy="14" r="2.5" fill="currentColor" fillOpacity="0.2" />
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M13 3L3 8v10l10 5 10-5V8L13 3z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        <path d="M3 8l10 5 10-5M13 13v9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
-    label: null,
+    featured: false,
     title: 'Kubernetes Optimization',
-    description:
-      'Improve cluster efficiency and reduce compute waste with intelligent resource requests, limits, and workload scheduling.',
-    bullets: [
-      'Resource request tuning',
-      'Node pool right-sizing',
-      'Horizontal pod autoscaling',
-      'Spot/preemptible migration',
-    ],
-    href: '#cta',
+    description: 'We tune your cluster resources to eliminate wasted compute immediately.',
+    bullets: ['Resource request tuning', 'Node pool right-sizing', 'HPA & VPA policies', 'Spot node migration'],
   },
 ]
 
 export default function Solutions() {
-  const handleCTA = (e: React.MouseEvent, href: string) => {
+  const handleCTA = (e: React.MouseEvent) => {
     e.preventDefault()
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -80,16 +58,13 @@ export default function Solutions() {
         {/* Header */}
         <FadeUp className="text-center mb-14">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-3">
-            Services
+            For Companies
           </span>
           <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold text-gray-900 leading-tight mb-4">
-            Elite engineers for every
-            <br className="hidden sm:block" /> cloud cost challenge
+            Every dollar of cloud waste
+            <br className="hidden sm:block" />
+            <span className="text-gray-400"> has a fix.</span>
           </h2>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">
-            We match you with certified FinOps experts who specialize in your
-            specific stack and cloud provider.
-          </p>
         </FadeUp>
 
         {/* Cards */}
@@ -98,42 +73,35 @@ export default function Solutions() {
             <FadeUp key={s.title} delay={i * 0.1}>
               <div
                 className={`relative h-full rounded-2xl p-7 flex flex-col ${
-                  i === 0
+                  s.featured
                     ? 'bg-primary text-white shadow-glow-blue'
                     : 'glass shadow-glass'
                 }`}
               >
-                {/* Popular badge */}
-                {s.label && (
-                  <span className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/20 text-white">
-                    {s.label}
-                  </span>
-                )}
+                {/* Problem tag */}
+                <span
+                  className={`inline-block text-[11px] font-medium mb-5 px-3 py-1 rounded-full self-start ${
+                    s.featured
+                      ? 'bg-white/15 text-blue-100'
+                      : 'bg-red-50 text-red-500 border border-red-100'
+                  }`}
+                >
+                  ↑ {s.problem}
+                </span>
 
                 {/* Icon */}
                 <div
-                  className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 ${
-                    i === 0
-                      ? 'bg-white/15 text-white'
-                      : 'bg-primary-light text-primary'
+                  className={`w-11 h-11 rounded-2xl flex items-center justify-center mb-5 ${
+                    s.featured ? 'bg-white/15 text-white' : 'bg-primary-light text-primary'
                   }`}
                 >
                   {s.icon}
                 </div>
 
-                {/* Title & description */}
-                <h3
-                  className={`text-[18px] font-bold mb-2 ${
-                    i === 0 ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
+                <h3 className={`text-[18px] font-bold mb-2 ${s.featured ? 'text-white' : 'text-gray-900'}`}>
                   {s.title}
                 </h3>
-                <p
-                  className={`text-[15px] leading-relaxed mb-6 flex-1 ${
-                    i === 0 ? 'text-blue-100' : 'text-gray-500'
-                  }`}
-                >
+                <p className={`text-[15px] leading-relaxed mb-6 flex-1 ${s.featured ? 'text-blue-100' : 'text-gray-500'}`}>
                   {s.description}
                 </p>
 
@@ -141,55 +109,24 @@ export default function Solutions() {
                 <ul className="space-y-2 mb-7">
                   {s.bullets.map((b) => (
                     <li key={b} className="flex items-center gap-2.5 text-sm">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        aria-hidden="true"
-                        className={i === 0 ? 'text-blue-200' : 'text-primary'}
-                      >
-                        <path
-                          d="M2 7l3.5 3.5L12 3"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"
+                        className={s.featured ? 'text-blue-200' : 'text-primary'}>
+                        <path d="M2 6.5l3 3 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      <span className={i === 0 ? 'text-blue-100' : 'text-gray-600'}>
-                        {b}
-                      </span>
+                      <span className={s.featured ? 'text-blue-100' : 'text-gray-600'}>{b}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA */}
                 <Button
-                  variant={i === 0 ? 'ghost' : 'secondary'}
+                  variant="ghost"
                   size="sm"
-                  className={
-                    i === 0
-                      ? 'bg-white text-primary hover:bg-blue-50 w-full'
-                      : 'w-full'
-                  }
-                  onClick={(e) => handleCTA(e, s.href)}
+                  className={s.featured ? 'bg-white text-primary hover:bg-blue-50 w-full' : 'bg-primary-light text-primary hover:bg-primary/10 border border-primary/20 w-full'}
+                  onClick={handleCTA}
                 >
-                  Get Started
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M2 7h10M8 3l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                  Get Free Audit
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Button>
               </div>

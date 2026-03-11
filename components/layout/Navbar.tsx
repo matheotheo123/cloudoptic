@@ -5,9 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Button from '@/components/ui/Button'
 
 const navLinks = [
-  { label: 'Services', href: '#solutions' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Case Studies', href: '#case-examples' },
+  { label: 'For Companies', href: '#solutions' },
+  { label: 'For FinOps Experts', href: '#for-experts' },
 ]
 
 export default function Navbar() {
@@ -44,29 +43,14 @@ export default function Navbar() {
           {/* Logo */}
           <a
             href="#"
-            className="flex items-center gap-2 group focus-visible:outline-none"
+            className="flex items-center gap-2 focus-visible:outline-none"
             aria-label="CloudOptic home"
           >
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
-                  fill="white"
-                  fillOpacity="0.3"
-                />
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" fill="white" fillOpacity="0.3" />
                 <circle cx="9" cy="9" r="3" fill="white" />
-                <path
-                  d="M9 4v2M9 12v2M4 9h2M12 9h2"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
+                <path d="M9 4v2M9 12v2M4 9h2M12 9h2" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </div>
             <span className="font-bold text-[17px] text-gray-900 tracking-tight">
@@ -88,16 +72,10 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <a
-              href="#solutions"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Talk to an Expert
-            </a>
+          {/* Primary CTA */}
+          <div className="hidden md:flex">
             <Button size="sm" onClick={handleCTA}>
-              Book Free Audit
+              Get Free Audit
             </Button>
           </div>
 
@@ -108,7 +86,6 @@ export default function Navbar() {
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            <span className="sr-only">Menu</span>
             <div className="flex flex-col gap-1.5 w-5">
               <motion.span
                 animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
@@ -153,13 +130,8 @@ export default function Navbar() {
                 </li>
               ))}
               <li className="pt-2 mt-1 border-t border-gray-100">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  className="w-full"
-                  onClick={handleCTA}
-                >
-                  Book Free Audit
+                <Button size="sm" className="w-full" onClick={handleCTA}>
+                  Get Free Audit
                 </Button>
               </li>
             </ul>

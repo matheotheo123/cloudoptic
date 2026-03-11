@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     'Azure cost optimization',
     'cloud spend',
   ],
+  metadataBase: new URL('https://cloudoptic.com'),
   authors: [{ name: 'CloudOptic' }],
   openGraph: {
     title: 'CloudOptic — Cut Your AI & Cloud Costs by 30%',
