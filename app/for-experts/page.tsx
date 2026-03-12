@@ -35,11 +35,11 @@ export default function ForExpertsPage() {
 
           {/* Headline */}
           <h1 className="text-[clamp(32px,5vw,52px)] font-extrabold leading-[1.08] tracking-tight text-gray-900 text-center mb-5">
-            Open <span className="gradient-text">FinOps Positions</span>
+            Open <span className="gradient-text">AI &amp; FinOps Positions</span>
           </h1>
 
           <p className="text-lg text-gray-500 text-center max-w-lg mx-auto mb-14">
-            We match vetted FinOps engineers with companies optimizing millions in cloud spend.
+            We match vetted FinOps/AI Engineers with companies optimizing their cloud and AI infrastructure.
           </p>
 
           {/* Jobs list — empty state */}
