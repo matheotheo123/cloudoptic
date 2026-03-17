@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/lib/require-admin'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 import SignOutButton from '@/app/admin/_components/SignOutButton'
 import Link from 'next/link'
 
@@ -7,7 +7,13 @@ export const metadata = {
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  await requireAdmin()
+  const supabase = createSupabaseServerClient()
+  const { data: { session } } = await supabase.auth.getSession()
+
+  // No session = login page (or middleware will redirect) — render without sidebar
+  if (!session) {
+    return <>{children}</>
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">

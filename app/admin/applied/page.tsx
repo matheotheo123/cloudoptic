@@ -1,4 +1,3 @@
-import { requireAdmin } from '@/lib/require-admin'
 import { supabaseAdmin } from '@/lib/supabase'
 import DeleteCandidateButton from '@/app/admin/_components/DeleteCandidateButton'
 
@@ -18,8 +17,6 @@ interface Candidate {
 }
 
 export default async function AppliedPage() {
-  await requireAdmin()
-
   const { data: candidates } = await supabaseAdmin
     .from('candidates')
     .select('*, jobs(title)')

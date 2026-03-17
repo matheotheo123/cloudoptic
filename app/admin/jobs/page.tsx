@@ -1,12 +1,9 @@
-import { requireAdmin } from '@/lib/require-admin'
 import { supabaseAdmin } from '@/lib/supabase'
 import JobsClient from './_components/JobsClient'
 
 export const dynamic = 'force-dynamic'
 
 export default async function JobsPage() {
-  await requireAdmin()
-
   const { data: jobs } = await supabaseAdmin
     .from('jobs')
     .select('*')
