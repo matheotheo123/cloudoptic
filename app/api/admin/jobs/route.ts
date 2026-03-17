@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  let body: { title?: string; platforms?: string[]; description?: string }
+  let body: { title?: string; description?: string }
   try {
     body = await req.json()
   } catch {
@@ -17,19 +17,15 @@ export async function POST(req: NextRequest) {
   }
 
   const title = (body.title ?? '').trim().slice(0, 200)
-  const platforms = Array.isArray(body.platforms) ? body.platforms : []
   const description = (body.description ?? '').trim().slice(0, 2000)
 
   if (!title) {
     return NextResponse.json({ error: 'Title is required.' }, { status: 422 })
   }
-  if (!platforms.length) {
-    return NextResponse.json({ error: 'At least one platform is required.' }, { status: 422 })
-  }
 
   const { data, error } = await supabaseAdmin
     .from('jobs')
-    .insert({ title, platforms, description, status: 'open' })
+    .insert({ title, platforms: [], description, status: 'open' })
     .select()
     .single()
 

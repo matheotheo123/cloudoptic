@@ -8,7 +8,6 @@ import ExpertModal from '@/components/ui/ExpertModal'
 interface Job {
   id: string
   title: string
-  platforms: string[]
   description: string
   created_at: string
 }
@@ -63,7 +62,7 @@ export default function ForExpertsClient({ jobs }: { jobs: Job[] }) {
             {/* Table header */}
             <div className="grid grid-cols-3 px-6 py-3 border-b border-gray-100 bg-gray-50/60">
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Role</span>
-              <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Platforms</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Description</span>
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 text-right">Action</span>
             </div>
 
@@ -95,12 +94,8 @@ export default function ForExpertsClient({ jobs }: { jobs: Job[] }) {
                         <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{job.description}</p>
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {job.platforms.map((p) => (
-                        <span key={p} className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-primary-light text-primary-dark">
-                          {p}
-                        </span>
-                      ))}
+                    <div className="text-xs text-gray-400 line-clamp-2">
+                      {job.description || '—'}
                     </div>
                     <div className="flex justify-end">
                       <button

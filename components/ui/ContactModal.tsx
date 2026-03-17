@@ -2,7 +2,6 @@
 
 import { useState, useRef, FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Turnstile } from '@marsidev/react-turnstile'
 import Button from '@/components/ui/Button'
 
 interface ContactModalProps {
@@ -23,15 +22,10 @@ const CLOUD_SPEND_OPTIONS = [
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errorMsg, setErrorMsg] = useState('')
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!turnstileToken) {
-      setErrorMsg('Please complete the security check.')
-      return
-    }
 
     const form = e.currentTarget
     const data = {
@@ -40,7 +34,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       company: (form.elements.namedItem('company') as HTMLInputElement).value.trim(),
       cloud_spend: (form.elements.namedItem('cloud_spend') as HTMLSelectElement).value,
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim(),
-      turnstileToken,
     }
 
     setStatus('loading')
@@ -72,7 +65,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     setTimeout(() => {
       setStatus('idle')
       setErrorMsg('')
-      setTurnstileToken(null)
     }, 300)
   }
 
@@ -113,10 +105,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <div>
-                    <h2
-                      id="modal-title"
-                      className="text-xl font-bold text-gray-900 mb-1"
-                    >
+                    <h2 id="modal-title" className="text-xl font-bold text-gray-900 mb-1">
                       Book a Strategy Call
                     </h2>
                     <p className="text-sm text-gray-400">
@@ -156,121 +145,57 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     <div className="space-y-4">
                       {/* Name */}
                       <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-xs font-semibold text-gray-700 mb-1.5"
-                        >
+                        <label htmlFor="name" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Full name <span aria-hidden="true" className="text-primary">*</span>
                         </label>
-                        <input
-                          id="name"
-                          name="name"
-                          type="text"
-                          required
-                          autoComplete="name"
-                          placeholder="Jane Smith"
-                          className={inputClass}
-                        />
+                        <input id="name" name="name" type="text" required autoComplete="name"
+                          placeholder="Jane Smith" className={inputClass} />
                       </div>
 
                       {/* Email */}
                       <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-xs font-semibold text-gray-700 mb-1.5"
-                        >
+                        <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Work email <span aria-hidden="true" className="text-primary">*</span>
                         </label>
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          required
-                          autoComplete="email"
-                          placeholder="jane@company.com"
-                          className={inputClass}
-                        />
+                        <input id="email" name="email" type="email" required autoComplete="email"
+                          placeholder="jane@company.com" className={inputClass} />
                       </div>
 
                       {/* Company */}
                       <div>
-                        <label
-                          htmlFor="company"
-                          className="block text-xs font-semibold text-gray-700 mb-1.5"
-                        >
+                        <label htmlFor="company" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Company <span aria-hidden="true" className="text-primary">*</span>
                         </label>
-                        <input
-                          id="company"
-                          name="company"
-                          type="text"
-                          required
-                          autoComplete="organization"
-                          placeholder="Acme Corp"
-                          className={inputClass}
-                        />
+                        <input id="company" name="company" type="text" required autoComplete="organization"
+                          placeholder="Acme Corp" className={inputClass} />
                       </div>
 
                       {/* Cloud spend */}
                       <div>
-                        <label
-                          htmlFor="cloud_spend"
-                          className="block text-xs font-semibold text-gray-700 mb-1.5"
-                        >
+                        <label htmlFor="cloud_spend" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Monthly cloud spend <span aria-hidden="true" className="text-primary">*</span>
                         </label>
-                        <select
-                          id="cloud_spend"
-                          name="cloud_spend"
-                          required
-                          className={inputClass}
-                          defaultValue=""
-                        >
-                          <option value="" disabled>
-                            Select a range
-                          </option>
+                        <select id="cloud_spend" name="cloud_spend" required className={inputClass} defaultValue="">
+                          <option value="" disabled>Select a range</option>
                           {CLOUD_SPEND_OPTIONS.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
+                            <option key={opt} value={opt}>{opt}</option>
                           ))}
                         </select>
                       </div>
 
                       {/* Message */}
                       <div>
-                        <label
-                          htmlFor="message"
-                          className="block text-xs font-semibold text-gray-700 mb-1.5"
-                        >
+                        <label htmlFor="message" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Tell us about your main cost challenges
                         </label>
-                        <textarea
-                          id="message"
-                          name="message"
-                          rows={3}
+                        <textarea id="message" name="message" rows={3}
                           placeholder="e.g. We have GPU clusters running 24/7 but only used during business hours..."
-                          className={`${inputClass} resize-none`}
-                        />
-                      </div>
-
-                      {/* Turnstile */}
-                      <div className="flex justify-center">
-                        <Turnstile
-                          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA'}
-                          onSuccess={(token) => setTurnstileToken(token)}
-                          onError={() => setTurnstileToken(null)}
-                          onExpire={() => setTurnstileToken(null)}
-                          options={{ theme: 'light', size: 'normal' }}
-                        />
+                          className={`${inputClass} resize-none`} />
                       </div>
 
                       {/* Error message */}
                       {status === 'error' && (
-                        <div
-                          role="alert"
-                          className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3"
-                        >
+                        <div role="alert" className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3">
                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="mt-0.5 flex-shrink-0 text-red-500" aria-hidden="true">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
                             <path d="M8 5v3.5M8 11h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -280,21 +205,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       )}
 
                       {/* Submit */}
-                      <Button
-                        type="submit"
-                        size="lg"
-                        loading={status === 'loading'}
-                        className="w-full"
-                        disabled={!turnstileToken}
-                      >
+                      <Button type="submit" size="lg" loading={status === 'loading'} className="w-full">
                         {status === 'loading' ? 'Submitting…' : 'Book My Free Audit'}
                       </Button>
 
                       <p className="text-[11px] text-gray-400 text-center">
                         By submitting you agree to our{' '}
-                        <a href="#" className="underline hover:text-gray-600">
-                          Privacy Policy
-                        </a>
+                        <a href="#" className="underline hover:text-gray-600">Privacy Policy</a>
                         . No spam, ever.
                       </p>
                     </div>

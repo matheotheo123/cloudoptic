@@ -2,7 +2,6 @@
 
 import { useState, useRef, FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Turnstile } from '@marsidev/react-turnstile'
 import Button from '@/components/ui/Button'
 
 interface ExpertModalProps {
@@ -14,40 +13,19 @@ interface ExpertModalProps {
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 
-const PLATFORMS = ['AWS', 'Azure', 'GCP']
 const EXPERIENCE_OPTIONS = ['1–2 years', '3–5 years', '6–9 years', '10+ years']
 
 export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: ExpertModalProps) {
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errorMsg, setErrorMsg] = useState('')
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([])
   const [fileName, setFileName] = useState<string | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
-  const togglePlatform = (p: string) =>
-    setSelectedPlatforms((prev) =>
-      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
-    )
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!turnstileToken) {
-      setErrorMsg('Please complete the security check.')
-      return
-    }
-    if (!selectedPlatforms.length) {
-      setErrorMsg('Please select at least one cloud platform.')
-      return
-    }
 
     const form = e.currentTarget
     const formData = new FormData(form)
-
-    // Replace platforms with checked values
-    formData.delete('platforms')
-    selectedPlatforms.forEach((p) => formData.append('platforms', p))
-    formData.set('turnstileToken', turnstileToken)
     if (jobId) formData.set('jobId', jobId)
 
     setStatus('loading')
@@ -66,7 +44,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
 
       setStatus('success')
       formRef.current?.reset()
-      setSelectedPlatforms([])
       setFileName(null)
     } catch (err: unknown) {
       setStatus('error')
@@ -80,7 +57,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
     setTimeout(() => {
       setStatus('idle')
       setErrorMsg('')
-      setTurnstileToken(null)
     }, 300)
   }
 
@@ -147,7 +123,7 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                     </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-2">Application received!</h3>
                     <p className="text-gray-500 text-sm mb-6">
-                      We&apos;ll be in touch within 48 hours to discuss next steps.
+                      We&apos;ll be in touch to discuss next steps.
                     </p>
                     <Button onClick={handleClose} variant="secondary">Close</Button>
                   </div>
@@ -179,29 +155,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                         </label>
                         <input id="expert-linkedin" name="linkedin" type="url" required
                           placeholder="https://linkedin.com/in/yourprofile" className={inputClass} />
-                      </div>
-
-                      {/* Cloud platforms */}
-                      <div>
-                        <p className="text-xs font-semibold text-gray-700 mb-2">
-                          Cloud platform expertise <span className="text-primary" aria-hidden="true">*</span>
-                        </p>
-                        <div className="flex gap-2">
-                          {PLATFORMS.map((p) => (
-                            <button
-                              key={p}
-                              type="button"
-                              onClick={() => togglePlatform(p)}
-                              className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all duration-150 ${
-                                selectedPlatforms.includes(p)
-                                  ? 'bg-primary text-white border-primary shadow-sm'
-                                  : 'bg-white text-gray-600 border-gray-200 hover:border-primary/40'
-                              }`}
-                            >
-                              {p}
-                            </button>
-                          ))}
-                        </div>
                       </div>
 
                       {/* Experience */}
@@ -242,17 +195,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                         </label>
                       </div>
 
-                      {/* Turnstile */}
-                      <div className="flex justify-center">
-                        <Turnstile
-                          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA'}
-                          onSuccess={(token) => setTurnstileToken(token)}
-                          onError={() => setTurnstileToken(null)}
-                          onExpire={() => setTurnstileToken(null)}
-                          options={{ theme: 'light', size: 'normal' }}
-                        />
-                      </div>
-
                       {/* Error */}
                       {status === 'error' && (
                         <div role="alert" className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3">
@@ -269,9 +211,8 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                         size="lg"
                         loading={status === 'loading'}
                         className="w-full"
-                        disabled={!turnstileToken}
                       >
-                        {status === 'loading' ? 'Submitting…' : 'Join the Network'}
+                        {status === 'loading' ? 'Submitting…' : 'Submit Application'}
                       </Button>
                     </div>
                   </form>

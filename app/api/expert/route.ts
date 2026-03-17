@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ratelimit, getIp } from '@/lib/ratelimit'
-import { verifyTurnstile } from '@/lib/turnstile'
 import { supabaseAdmin } from '@/lib/supabase'
 import { sendExpertNotification } from '@/lib/email'
 
@@ -40,8 +39,7 @@ export async function POST(req: NextRequest) {
   const email = sanitize(formData.get('email'))
   const linkedin = sanitize(formData.get('linkedin'))
   const experience = sanitize(formData.get('experience'))
-  const turnstileToken = sanitize(formData.get('turnstileToken'))
-  const platformsRaw = formData.getAll('platforms').map((p) => String(p).trim())
+  const jobId = sanitize(formData.get('jobId')) || null
   const resumeFile = formData.get('resume') as File | null
 
   // ── 3. Validation ───────────────────────────────────────────────────────────
@@ -54,68 +52,49 @@ export async function POST(req: NextRequest) {
   if (!linkedin || !isValidLinkedIn(linkedin)) {
     return NextResponse.json({ error: 'Please provide a valid LinkedIn URL.' }, { status: 422 })
   }
-  if (!platformsRaw.length) {
-    return NextResponse.json({ error: 'Please select at least one cloud platform.' }, { status: 422 })
-  }
   if (!experience) {
     return NextResponse.json({ error: 'Please select your years of experience.' }, { status: 422 })
-  }
-  if (!turnstileToken) {
-    return NextResponse.json({ error: 'Security check required.' }, { status: 422 })
   }
   if (resumeFile && resumeFile.size > 5 * 1024 * 1024) {
     return NextResponse.json({ error: 'Resume must be under 5MB.' }, { status: 422 })
   }
 
-  // ── 4. Verify Turnstile ─────────────────────────────────────────────────────
-  const turnstileValid = await verifyTurnstile(turnstileToken, ip)
-  if (!turnstileValid) {
-    return NextResponse.json(
-      { error: 'Security check failed. Please refresh and try again.' },
-      { status: 403 }
-    )
-  }
-
-  // ── 5. Upload resume to Supabase Storage ────────────────────────────────────
-  let resumeUrl: string | null = null
+  // ── 4. Upload resume to Supabase Storage ────────────────────────────────────
+  let resumePath: string | null = null
   if (resumeFile && resumeFile.size > 0) {
     try {
       const fileExt = resumeFile.name.split('.').pop() ?? 'pdf'
-      const fileName = `${Date.now()}-${name.replace(/\s+/g, '-').toLowerCase()}.${fileExt}`
+      const safeName = name.replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 40)
+      const fileName = `${Date.now()}-${safeName}.${fileExt}`
       const arrayBuffer = await resumeFile.arrayBuffer()
       const buffer = Buffer.from(arrayBuffer)
 
       const { error: uploadError } = await supabaseAdmin.storage
         .from('expert-resumes')
         .upload(fileName, buffer, {
-          contentType: resumeFile.type || 'application/pdf',
+          contentType: 'application/pdf',
           upsert: false,
         })
 
       if (uploadError) {
         console.error('Resume upload error:', uploadError)
-        // Non-fatal — continue without resume URL
       } else {
-        const { data: urlData } = supabaseAdmin.storage
-          .from('expert-resumes')
-          .getPublicUrl(fileName)
-        resumeUrl = urlData.publicUrl
+        resumePath = fileName
       }
     } catch (err) {
       console.error('Resume processing error:', err)
     }
   }
 
-  // ── 6. Insert to Supabase ───────────────────────────────────────────────────
-  const jobId = sanitize(formData.get('jobId')) || null
+  // ── 5. Insert to Supabase ───────────────────────────────────────────────────
   const { error: dbError } = await supabaseAdmin.from('candidates').insert({
     name,
     email,
     linkedin,
-    platforms: platformsRaw,
+    platforms: [],
     experience,
-    resume_url: resumeUrl,
-    job_id: jobId || null,
+    resume_url: resumePath,
+    job_id: jobId,
     created_at: new Date().toISOString(),
   })
 
@@ -127,14 +106,14 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // ── 7. Email notification ───────────────────────────────────────────────────
+  // ── 6. Email notification ───────────────────────────────────────────────────
   await sendExpertNotification({
     name,
     email,
     linkedin,
-    platforms: platformsRaw.join(', '),
+    platforms: '',
     experience,
-    resume_url: resumeUrl ?? undefined,
+    resume_url: resumePath ?? undefined,
   })
 
   return NextResponse.json({ success: true }, { status: 201 })

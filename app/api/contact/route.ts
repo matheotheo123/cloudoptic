@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ratelimit, getIp } from '@/lib/ratelimit'
-import { verifyTurnstile } from '@/lib/turnstile'
 import { supabaseAdmin } from '@/lib/supabase'
 import { sendLeadNotification } from '@/lib/email'
 
@@ -38,7 +37,6 @@ export async function POST(req: NextRequest) {
   const company = sanitize(body.company)
   const cloud_spend = sanitize(body.cloud_spend)
   const message = sanitize(body.message)
-  const turnstileToken = sanitize(body.turnstileToken)
 
   // ── 3. Input validation ─────────────────────────────────────────────────────
   if (!name || name.length < 2) {
@@ -53,20 +51,8 @@ export async function POST(req: NextRequest) {
   if (!cloud_spend) {
     return NextResponse.json({ error: 'Please select your monthly cloud spend.' }, { status: 422 })
   }
-  if (!turnstileToken) {
-    return NextResponse.json({ error: 'Security check required.' }, { status: 422 })
-  }
 
-  // ── 4. Verify Turnstile ─────────────────────────────────────────────────────
-  const turnstileValid = await verifyTurnstile(turnstileToken, ip)
-  if (!turnstileValid) {
-    return NextResponse.json(
-      { error: 'Security check failed. Please refresh and try again.' },
-      { status: 403 }
-    )
-  }
-
-  // ── 5. Persist to Supabase (server-side only, service role) ─────────────────
+  // ── 4. Persist to Supabase ──────────────────────────────────────────────────
   const { error: dbError } = await supabaseAdmin.from('leads').insert({
     name,
     email,
@@ -84,13 +70,12 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // ── 6. Email notification ───────────────────────────────────────────────────
+  // ── 5. Email notification ───────────────────────────────────────────────────
   await sendLeadNotification({ name, email, company, cloud_spend, message: message || undefined })
 
   return NextResponse.json({ success: true }, { status: 201 })
 }
 
-// Block all other HTTP methods
 export async function GET() {
   return NextResponse.json({ error: 'Method not allowed.' }, { status: 405 })
 }
