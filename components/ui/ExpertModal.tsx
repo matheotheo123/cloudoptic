@@ -8,6 +8,8 @@ import Button from '@/components/ui/Button'
 interface ExpertModalProps {
   isOpen: boolean
   onClose: () => void
+  jobId?: string
+  jobTitle?: string
 }
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error'
@@ -15,7 +17,7 @@ type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 const PLATFORMS = ['AWS', 'Azure', 'GCP']
 const EXPERIENCE_OPTIONS = ['1–2 years', '3–5 years', '6–9 years', '10+ years']
 
-export default function ExpertModal({ isOpen, onClose }: ExpertModalProps) {
+export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: ExpertModalProps) {
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
@@ -46,6 +48,7 @@ export default function ExpertModal({ isOpen, onClose }: ExpertModalProps) {
     formData.delete('platforms')
     selectedPlatforms.forEach((p) => formData.append('platforms', p))
     formData.set('turnstileToken', turnstileToken)
+    if (jobId) formData.set('jobId', jobId)
 
     setStatus('loading')
     setErrorMsg('')
@@ -117,10 +120,10 @@ export default function ExpertModal({ isOpen, onClose }: ExpertModalProps) {
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <h2 id="expert-modal-title" className="text-xl font-bold text-gray-900 mb-1">
-                      Join the FinOps Network
+                      {jobTitle ? `Apply: ${jobTitle}` : 'Join the FinOps Network'}
                     </h2>
                     <p className="text-sm text-gray-400">
-                      We&apos;ll review your application within 48 hours.
+                      We&apos;ll review your application and be in touch.
                     </p>
                   </div>
                   <button

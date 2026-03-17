@@ -107,13 +107,15 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 6. Insert to Supabase ───────────────────────────────────────────────────
-  const { error: dbError } = await supabaseAdmin.from('experts').insert({
+  const jobId = sanitize(formData.get('jobId')) || null
+  const { error: dbError } = await supabaseAdmin.from('candidates').insert({
     name,
     email,
     linkedin,
     platforms: platformsRaw,
     experience,
     resume_url: resumeUrl,
+    job_id: jobId || null,
     created_at: new Date().toISOString(),
   })
 
