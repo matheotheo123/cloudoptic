@@ -148,15 +148,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                           placeholder="jane@email.com" className={inputClass} />
                       </div>
 
-                      {/* LinkedIn */}
-                      <div>
-                        <label htmlFor="expert-linkedin" className="block text-xs font-semibold text-gray-700 mb-1.5">
-                          LinkedIn URL <span className="text-primary" aria-hidden="true">*</span>
-                        </label>
-                        <input id="expert-linkedin" name="linkedin" type="url" required
-                          placeholder="https://linkedin.com/in/yourprofile" className={inputClass} />
-                      </div>
-
                       {/* Experience */}
                       <div>
                         <label htmlFor="expert-experience" className="block text-xs font-semibold text-gray-700 mb-1.5">
@@ -173,7 +164,7 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
 
                       {/* Resume upload */}
                       <div>
-                        <p className="text-xs font-semibold text-gray-700 mb-1.5">Resume (PDF, max 5MB)</p>
+                        <p className="text-xs font-semibold text-gray-700 mb-1.5">Resume (PDF or DOCX, max 5MB)</p>
                         <label
                           htmlFor="expert-resume"
                           className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-dashed border-gray-200 hover:border-primary/40 cursor-pointer transition-colors bg-gray-50/50"
@@ -188,7 +179,7 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                             id="expert-resume"
                             name="resume"
                             type="file"
-                            accept=".pdf"
+                            accept=".pdf,.doc,.docx"
                             className="sr-only"
                             onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
                           />

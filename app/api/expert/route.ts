@@ -12,9 +12,11 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function isValidLinkedIn(url: string): boolean {
-  return url.startsWith('https://linkedin.com') || url.startsWith('https://www.linkedin.com')
-}
+const ALLOWED_MIME_TYPES = [
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+]
 
 export async function POST(req: NextRequest) {
   // ── 1. Rate limiting ────────────────────────────────────────────────────────
@@ -37,7 +39,6 @@ export async function POST(req: NextRequest) {
 
   const name = sanitize(formData.get('name'))
   const email = sanitize(formData.get('email'))
-  const linkedin = sanitize(formData.get('linkedin'))
   const experience = sanitize(formData.get('experience'))
   const jobId = sanitize(formData.get('jobId')) || null
   const resumeFile = formData.get('resume') as File | null
@@ -48,9 +49,6 @@ export async function POST(req: NextRequest) {
   }
   if (!email || !isValidEmail(email)) {
     return NextResponse.json({ error: 'Please provide a valid email address.' }, { status: 422 })
-  }
-  if (!linkedin || !isValidLinkedIn(linkedin)) {
-    return NextResponse.json({ error: 'Please provide a valid LinkedIn URL.' }, { status: 422 })
   }
   if (!experience) {
     return NextResponse.json({ error: 'Please select your years of experience.' }, { status: 422 })
@@ -63,18 +61,18 @@ export async function POST(req: NextRequest) {
   let resumePath: string | null = null
   if (resumeFile && resumeFile.size > 0) {
     try {
-      const fileExt = resumeFile.name.split('.').pop() ?? 'pdf'
+      const fileExt = resumeFile.name.split('.').pop()?.toLowerCase() ?? 'pdf'
       const safeName = name.replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 40)
       const fileName = `${Date.now()}-${safeName}.${fileExt}`
+      const contentType = ALLOWED_MIME_TYPES.includes(resumeFile.type)
+        ? resumeFile.type
+        : 'application/octet-stream'
       const arrayBuffer = await resumeFile.arrayBuffer()
       const buffer = Buffer.from(arrayBuffer)
 
       const { error: uploadError } = await supabaseAdmin.storage
         .from('expert-resumes')
-        .upload(fileName, buffer, {
-          contentType: 'application/pdf',
-          upsert: false,
-        })
+        .upload(fileName, buffer, { contentType, upsert: false })
 
       if (uploadError) {
         console.error('Resume upload error:', uploadError)
@@ -90,7 +88,7 @@ export async function POST(req: NextRequest) {
   const { error: dbError } = await supabaseAdmin.from('candidates').insert({
     name,
     email,
-    linkedin,
+    linkedin: '',
     platforms: [],
     experience,
     resume_url: resumePath,
@@ -110,7 +108,7 @@ export async function POST(req: NextRequest) {
   await sendExpertNotification({
     name,
     email,
-    linkedin,
+    linkedin: '',
     platforms: '',
     experience,
     resume_url: resumePath ?? undefined,

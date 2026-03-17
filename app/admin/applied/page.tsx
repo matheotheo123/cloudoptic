@@ -7,7 +7,6 @@ interface Candidate {
   id: string
   name: string
   email: string
-  linkedin: string
   experience: string
   resume_url: string | null
   job_id: string | null
@@ -18,7 +17,7 @@ interface Candidate {
 export default async function AppliedPage() {
   const { data: candidates } = await supabaseAdmin
     .from('candidates')
-    .select('id, name, email, linkedin, experience, resume_url, job_id, created_at, jobs(title)')
+    .select('id, name, email, experience, resume_url, job_id, created_at, jobs(title)')
     .order('created_at', { ascending: false })
 
   const rows = (candidates ?? []) as unknown as Candidate[]
@@ -54,7 +53,7 @@ export default async function AppliedPage() {
               <tr className="border-b border-gray-100 bg-gray-50/60">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Name</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Email</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Experience</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Exp</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Job</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Date</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Resume</th>
@@ -66,10 +65,6 @@ export default async function AppliedPage() {
                 <tr key={c.id} className={`border-b border-gray-50 hover:bg-gray-50/40 transition-colors ${i === rows.length - 1 ? 'border-none' : ''}`}>
                   <td className="px-5 py-3.5">
                     <div className="font-medium text-gray-900">{c.name}</div>
-                    <a href={c.linkedin} target="_blank" rel="noopener noreferrer"
-                      className="text-xs text-[#4DA3FF] hover:underline">
-                      LinkedIn ↗
-                    </a>
                   </td>
                   <td className="px-5 py-3.5 text-gray-600">{c.email}</td>
                   <td className="px-5 py-3.5 text-gray-500">{c.experience}</td>
