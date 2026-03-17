@@ -1,31 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ratelimit, getIp } from '@/lib/ratelimit'
-import { supabaseAdmin } from '@/lib/supabase'
-import { sendExpertNotification } from '@/lib/email'
+import { createClient } from '@supabase/supabase-js'
 
-function sanitize(value: FormDataEntryValue | null): string {
-  if (typeof value !== 'string') return ''
-  return value.trim().slice(0, 2000)
+// Inline service-role client — no module-level throw, no shared state
+function getAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error('Missing Supabase env vars')
+  return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } })
 }
-
-function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}
-
-const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx']
 
 export async function POST(req: NextRequest) {
-  // ── 1. Rate limiting ────────────────────────────────────────────────────────
-  const ip = getIp(req)
-  const { success: rateLimitOk } = await ratelimit.limit(`expert:${ip}`)
-  if (!rateLimitOk) {
-    return NextResponse.json(
-      { error: 'Too many requests. Please try again in a minute.' },
-      { status: 429 }
-    )
-  }
-
-  // ── 2. Parse multipart form data ────────────────────────────────────────────
   let formData: FormData
   try {
     formData = await req.formData()
@@ -33,84 +17,56 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid form data.' }, { status: 400 })
   }
 
-  const name = sanitize(formData.get('name'))
-  const email = sanitize(formData.get('email'))
-  const jobId = sanitize(formData.get('jobId')) || null
+  const name = String(formData.get('name') ?? '').trim().slice(0, 200)
+  const email = String(formData.get('email') ?? '').trim().slice(0, 200)
+  const jobId = String(formData.get('jobId') ?? '').trim() || null
   const resumeFile = formData.get('resume') as File | null
 
-  // ── 3. Validation ───────────────────────────────────────────────────────────
-  if (!name || name.length < 2) {
-    return NextResponse.json({ error: 'Please provide your full name.' }, { status: 422 })
-  }
-  if (!email || !isValidEmail(email)) {
-    return NextResponse.json({ error: 'Please provide a valid email address.' }, { status: 422 })
-  }
-  if (resumeFile && resumeFile.size > 5 * 1024 * 1024) {
-    return NextResponse.json({ error: 'Resume must be under 5MB.' }, { status: 422 })
+  let supabase
+  try {
+    supabase = getAdmin()
+  } catch (err) {
+    console.error('Supabase init error:', err)
+    return NextResponse.json({ error: 'Server configuration error.' }, { status: 500 })
   }
 
-  // ── 4. Upload resume to Supabase Storage ────────────────────────────────────
-  let resumePath: string | null = null
+  // Upload resume to storage
+  let resumeUrl: string | null = null
   if (resumeFile && resumeFile.size > 0) {
     try {
-      const fileExt = (resumeFile.name.split('.').pop() ?? 'pdf').toLowerCase()
-      if (!ALLOWED_EXTENSIONS.includes(fileExt)) {
-        return NextResponse.json({ error: 'Only PDF and DOCX files are accepted.' }, { status: 422 })
-      }
-      const safeName = name.replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 40)
-      const fileName = `${Date.now()}-${safeName}.${fileExt}`
-      const arrayBuffer = await resumeFile.arrayBuffer()
-      const buffer = Buffer.from(arrayBuffer)
+      const ext = (resumeFile.name.split('.').pop() ?? 'pdf').toLowerCase()
+      const safeName = (name || 'applicant').replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 40)
+      const path = `${Date.now()}-${safeName}.${ext}`
+      const bytes = await resumeFile.arrayBuffer()
 
-      const { error: uploadError } = await supabaseAdmin.storage
+      const { error: uploadErr } = await supabase.storage
         .from('expert-resumes')
-        .upload(fileName, buffer, {
+        .upload(path, Buffer.from(bytes), {
           contentType: resumeFile.type || 'application/octet-stream',
           upsert: false,
         })
 
-      if (uploadError) {
-        console.error('Resume upload error:', uploadError)
-        // Non-fatal — save application without resume
+      if (uploadErr) {
+        console.error('Storage upload error:', uploadErr.message)
       } else {
-        resumePath = fileName
+        resumeUrl = path
       }
     } catch (err) {
-      console.error('Resume processing error:', err)
+      console.error('File processing error:', err)
     }
   }
 
-  // ── 5. Insert to Supabase ───────────────────────────────────────────────────
-  const { error: dbError } = await supabaseAdmin.from('candidates').insert({
-    name,
-    email,
-    linkedin: '',
-    platforms: [],
-    experience: '',
-    resume_url: resumePath,
+  // Insert candidate row
+  const { error: dbErr } = await supabase.from('candidates').insert({
+    name: name || null,
+    email: email || null,
+    resume_url: resumeUrl,
     job_id: jobId,
   })
 
-  if (dbError) {
-    console.error('Supabase insert error:', dbError.message, dbError.details)
-    return NextResponse.json(
-      { error: 'Failed to save your application. Please try again.' },
-      { status: 500 }
-    )
-  }
-
-  // ── 6. Email notification (non-fatal) ────────────────────────────────────────
-  try {
-    await sendExpertNotification({
-      name,
-      email,
-      linkedin: '',
-      platforms: '',
-      experience: '',
-      resume_url: resumePath ?? undefined,
-    })
-  } catch (err) {
-    console.error('Email notification error:', err)
+  if (dbErr) {
+    console.error('DB insert error:', dbErr.message, dbErr.details, dbErr.hint)
+    return NextResponse.json({ error: 'Failed to save application.' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true }, { status: 201 })
