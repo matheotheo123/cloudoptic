@@ -12,11 +12,7 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-const ALLOWED_MIME_TYPES = [
-  'application/pdf',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/msword',
-]
+const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx']
 
 export async function POST(req: NextRequest) {
   // ── 1. Rate limiting ────────────────────────────────────────────────────────
@@ -39,7 +35,6 @@ export async function POST(req: NextRequest) {
 
   const name = sanitize(formData.get('name'))
   const email = sanitize(formData.get('email'))
-  const experience = sanitize(formData.get('experience'))
   const jobId = sanitize(formData.get('jobId')) || null
   const resumeFile = formData.get('resume') as File | null
 
@@ -50,9 +45,6 @@ export async function POST(req: NextRequest) {
   if (!email || !isValidEmail(email)) {
     return NextResponse.json({ error: 'Please provide a valid email address.' }, { status: 422 })
   }
-  if (!experience) {
-    return NextResponse.json({ error: 'Please select your years of experience.' }, { status: 422 })
-  }
   if (resumeFile && resumeFile.size > 5 * 1024 * 1024) {
     return NextResponse.json({ error: 'Resume must be under 5MB.' }, { status: 422 })
   }
@@ -61,21 +53,25 @@ export async function POST(req: NextRequest) {
   let resumePath: string | null = null
   if (resumeFile && resumeFile.size > 0) {
     try {
-      const fileExt = resumeFile.name.split('.').pop()?.toLowerCase() ?? 'pdf'
+      const fileExt = (resumeFile.name.split('.').pop() ?? 'pdf').toLowerCase()
+      if (!ALLOWED_EXTENSIONS.includes(fileExt)) {
+        return NextResponse.json({ error: 'Only PDF and DOCX files are accepted.' }, { status: 422 })
+      }
       const safeName = name.replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 40)
       const fileName = `${Date.now()}-${safeName}.${fileExt}`
-      const contentType = ALLOWED_MIME_TYPES.includes(resumeFile.type)
-        ? resumeFile.type
-        : 'application/octet-stream'
       const arrayBuffer = await resumeFile.arrayBuffer()
       const buffer = Buffer.from(arrayBuffer)
 
       const { error: uploadError } = await supabaseAdmin.storage
         .from('expert-resumes')
-        .upload(fileName, buffer, { contentType, upsert: false })
+        .upload(fileName, buffer, {
+          contentType: resumeFile.type || 'application/octet-stream',
+          upsert: false,
+        })
 
       if (uploadError) {
         console.error('Resume upload error:', uploadError)
+        // Non-fatal — save application without resume
       } else {
         resumePath = fileName
       }
@@ -90,29 +86,32 @@ export async function POST(req: NextRequest) {
     email,
     linkedin: '',
     platforms: [],
-    experience,
+    experience: '',
     resume_url: resumePath,
     job_id: jobId,
-    created_at: new Date().toISOString(),
   })
 
   if (dbError) {
-    console.error('Supabase insert error:', dbError)
+    console.error('Supabase insert error:', dbError.message, dbError.details)
     return NextResponse.json(
       { error: 'Failed to save your application. Please try again.' },
       { status: 500 }
     )
   }
 
-  // ── 6. Email notification ───────────────────────────────────────────────────
-  await sendExpertNotification({
-    name,
-    email,
-    linkedin: '',
-    platforms: '',
-    experience,
-    resume_url: resumePath ?? undefined,
-  })
+  // ── 6. Email notification (non-fatal) ────────────────────────────────────────
+  try {
+    await sendExpertNotification({
+      name,
+      email,
+      linkedin: '',
+      platforms: '',
+      experience: '',
+      resume_url: resumePath ?? undefined,
+    })
+  } catch (err) {
+    console.error('Email notification error:', err)
+  }
 
   return NextResponse.json({ success: true }, { status: 201 })
 }

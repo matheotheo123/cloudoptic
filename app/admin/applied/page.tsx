@@ -7,7 +7,6 @@ interface Candidate {
   id: string
   name: string
   email: string
-  experience: string
   resume_url: string | null
   job_id: string | null
   created_at: string
@@ -17,7 +16,7 @@ interface Candidate {
 export default async function AppliedPage() {
   const { data: candidates } = await supabaseAdmin
     .from('candidates')
-    .select('id, name, email, experience, resume_url, job_id, created_at, jobs(title)')
+    .select('id, name, email, resume_url, job_id, created_at, jobs(title)')
     .order('created_at', { ascending: false })
 
   const rows = (candidates ?? []) as unknown as Candidate[]
@@ -53,7 +52,6 @@ export default async function AppliedPage() {
               <tr className="border-b border-gray-100 bg-gray-50/60">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Name</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Email</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Exp</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Job</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Date</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Resume</th>
@@ -67,7 +65,6 @@ export default async function AppliedPage() {
                     <div className="font-medium text-gray-900">{c.name}</div>
                   </td>
                   <td className="px-5 py-3.5 text-gray-600">{c.email}</td>
-                  <td className="px-5 py-3.5 text-gray-500">{c.experience}</td>
                   <td className="px-5 py-3.5 text-gray-500 text-xs">
                     {c.jobs?.title ?? <span className="text-gray-300">—</span>}
                   </td>

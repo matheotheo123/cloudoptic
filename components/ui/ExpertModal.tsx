@@ -13,8 +13,6 @@ interface ExpertModalProps {
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 
-const EXPERIENCE_OPTIONS = ['1–2 years', '3–5 years', '6–9 years', '10+ years']
-
 export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: ExpertModalProps) {
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -92,7 +90,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
           >
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
               <div className="p-8">
-                {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <h2 id="expert-modal-title" className="text-xl font-bold text-gray-900 mb-1">
@@ -113,7 +110,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                   </button>
                 </div>
 
-                {/* Success */}
                 {status === 'success' ? (
                   <div className="text-center py-10">
                     <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
@@ -130,7 +126,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                 ) : (
                   <form ref={formRef} onSubmit={handleSubmit} noValidate>
                     <div className="space-y-4">
-                      {/* Name */}
                       <div>
                         <label htmlFor="expert-name" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Full name <span className="text-primary" aria-hidden="true">*</span>
@@ -139,7 +134,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                           placeholder="Jane Smith" className={inputClass} />
                       </div>
 
-                      {/* Email */}
                       <div>
                         <label htmlFor="expert-email" className="block text-xs font-semibold text-gray-700 mb-1.5">
                           Email <span className="text-primary" aria-hidden="true">*</span>
@@ -148,21 +142,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                           placeholder="jane@email.com" className={inputClass} />
                       </div>
 
-                      {/* Experience */}
-                      <div>
-                        <label htmlFor="expert-experience" className="block text-xs font-semibold text-gray-700 mb-1.5">
-                          Years of experience <span className="text-primary" aria-hidden="true">*</span>
-                        </label>
-                        <select id="expert-experience" name="experience" required defaultValue=""
-                          className={inputClass}>
-                          <option value="" disabled>Select range</option>
-                          {EXPERIENCE_OPTIONS.map((opt) => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* Resume upload */}
                       <div>
                         <p className="text-xs font-semibold text-gray-700 mb-1.5">Resume (PDF or DOCX, max 5MB)</p>
                         <label
@@ -186,7 +165,6 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                         </label>
                       </div>
 
-                      {/* Error */}
                       {status === 'error' && (
                         <div role="alert" className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3">
                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="mt-0.5 flex-shrink-0 text-red-500" aria-hidden="true">
@@ -197,12 +175,7 @@ export default function ExpertModal({ isOpen, onClose, jobId, jobTitle }: Expert
                         </div>
                       )}
 
-                      <Button
-                        type="submit"
-                        size="lg"
-                        loading={status === 'loading'}
-                        className="w-full"
-                      >
+                      <Button type="submit" size="lg" loading={status === 'loading'} className="w-full">
                         {status === 'loading' ? 'Submitting…' : 'Submit Application'}
                       </Button>
                     </div>
