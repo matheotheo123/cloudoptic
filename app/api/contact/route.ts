@@ -35,7 +35,6 @@ export async function POST(req: NextRequest) {
   const name = sanitize(body.name)
   const email = sanitize(body.email)
   const company = sanitize(body.company)
-  const cloud_spend = sanitize(body.cloud_spend)
   const message = sanitize(body.message)
 
   // ── 3. Input validation ─────────────────────────────────────────────────────
@@ -48,16 +47,12 @@ export async function POST(req: NextRequest) {
   if (!company) {
     return NextResponse.json({ error: 'Please provide your company name.' }, { status: 422 })
   }
-  if (!cloud_spend) {
-    return NextResponse.json({ error: 'Please select your monthly cloud spend.' }, { status: 422 })
-  }
 
   // ── 4. Persist to Supabase ──────────────────────────────────────────────────
   const { error: dbError } = await supabaseAdmin.from('leads').insert({
     name,
     email,
     company,
-    cloud_spend,
     message: message || null,
     created_at: new Date().toISOString(),
   })
@@ -71,7 +66,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 5. Email notification ───────────────────────────────────────────────────
-  await sendLeadNotification({ name, email, company, cloud_spend, message: message || undefined })
+  await sendLeadNotification({ name, email, company, cloud_spend: '', message: message || undefined })
 
   return NextResponse.json({ success: true }, { status: 201 })
 }

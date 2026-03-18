@@ -11,14 +11,6 @@ interface ContactModalProps {
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 
-const CLOUD_SPEND_OPTIONS = [
-  'Under $10k/month',
-  '$10k – $50k/month',
-  '$50k – $150k/month',
-  '$150k – $500k/month',
-  '$500k+/month',
-]
-
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -32,7 +24,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       name: (form.elements.namedItem('name') as HTMLInputElement).value.trim(),
       email: (form.elements.namedItem('email') as HTMLInputElement).value.trim(),
       company: (form.elements.namedItem('company') as HTMLInputElement).value.trim(),
-      cloud_spend: (form.elements.namedItem('cloud_spend') as HTMLSelectElement).value,
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim(),
     }
 
@@ -168,19 +159,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         </label>
                         <input id="company" name="company" type="text" required autoComplete="organization"
                           placeholder="Acme Corp" className={inputClass} />
-                      </div>
-
-                      {/* Cloud spend */}
-                      <div>
-                        <label htmlFor="cloud_spend" className="block text-xs font-semibold text-gray-700 mb-1.5">
-                          Monthly cloud spend <span aria-hidden="true" className="text-primary">*</span>
-                        </label>
-                        <select id="cloud_spend" name="cloud_spend" required className={inputClass} defaultValue="">
-                          <option value="" disabled>Select a range</option>
-                          {CLOUD_SPEND_OPTIONS.map((opt) => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
                       </div>
 
                       {/* Message */}

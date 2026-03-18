@@ -55,7 +55,7 @@ const solutions = [
     description: 'We connect you with vetted AI engineers and FinOps experts ready to join your team.',
     bullets: [
       'Vetted AI engineers on-demand',
-      'FinOps-certified talent',
+      'Deploy AI agents',
       'Fractional & full-time options',
       'Fast placement support',
     ],
